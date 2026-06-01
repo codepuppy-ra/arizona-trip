@@ -1,1 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arizona Trip — June 18–22</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F5ECD7;
+    --terracotta: #C4622D;
+    --rust: #8B3A1E;
+    --sage: #7A8C6E;
+    --sky: #4A7FA5;
+    --dusk: #1C1A16;
+    --warm-white: #FAF6EF;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dusk);
+    color: var(--sand);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(245,236,215,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(245,236,215,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 10%, rgba(245,236,215,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 35%, rgba(245,236,215,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 70%, rgba(245,236,215,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 60%, rgba(245,236,215,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, rgba(245,236,215,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(245,236,215,0.25) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 64px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 8vw, 72px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--warm-white);
+    margin-bottom: 12px;
+  }
+
+  header h1 em {
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+  .header-dates {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-top: 20px;
+  }
+
+  .header-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--terracotta);
+    margin: 24px auto 0;
+    opacity: 0.6;
+  }
+
+  /* Trip summary pills */
+  .trip-meta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 64px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .pill {
+    background: rgba(196,98,45,0.12);
+    border: 1px solid rgba(196,98,45,0.3);
+    border-radius: 100px;
+    padding: 7px 18px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--terracotta);
+    text-transform: uppercase;
+  }
+
+  /* Day cards */
+  .day-block {
+    margin-bottom: 48px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .day-block:nth-child(1) { animation-delay: 0.1s; }
+  .day-block:nth-child(2) { animation-delay: 0.2s; }
+  .day-block:nth-child(3) { animation-delay: 0.3s; }
+  .day-block:nth-child(4) { animation-delay: 0.4s; }
+  .day-block:nth-child(5) { animation-delay: 0.5s; }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(245,236,215,0.1);
+  }
+
+  .day-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(196,98,45,0.25);
+    line-height: 1;
+  }
+
+  .day-title-wrap {}
+
+  .day-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 2px;
+  }
+
+  .day-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--warm-white);
+  }
+
+  /* Activity items */
+  .activity {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 20px;
+    margin-bottom: 6px;
+    position: relative;
+  }
+
+  .activity:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 37px;
+    top: 32px;
+    bottom: -6px;
+    width: 1px;
+    background: rgba(245,236,215,0.08);
+  }
+
+  .activity-time {
+    padding-top: 12px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--sage);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .activity-dot {
+    position: absolute;
+    left: 32px;
+    top: 16px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--dusk);
+    border: 2px solid var(--terracotta);
+    z-index: 1;
+  }
+
+  .activity-card {
+    background: rgba(245,236,215,0.04);
+    border: 1px solid rgba(245,236,215,0.08);
+    border-radius: 12px;
+    padding: 14px 18px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .activity-card:hover {
+    background: rgba(245,236,215,0.07);
+    border-color: rgba(196,98,45,0.25);
+  }
+
+  .activity-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--warm-white);
+    margin-bottom: 4px;
+  }
+
+  .activity-name a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(196,98,45,0.4);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .activity-name a:hover {
+    color: var(--terracotta);
+    border-color: var(--terracotta);
+  }
+
+  .activity-type {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 6px;
+  }
+
+  .activity-note {
+    font-size: 12.5px;
+    color: rgba(245,236,215,0.55);
+    line-height: 1.6;
+  }
+
+  .activity-note strong {
+    color: var(--terracotta);
+    font-weight: 500;
+  }
+
+  /* Type badges */
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 100px;
+    margin-bottom: 7px;
+    font-weight: 500;
+  }
+
+  .badge-hike { background: rgba(122,140,110,0.2); color: var(--sage); }
+  .badge-water { background: rgba(74,127,165,0.2); color: var(--sky); }
+  .badge-food { background: rgba(196,98,45,0.2); color: var(--terracotta); }
+  .badge-nightlife { background: rgba(139,58,30,0.2); color: #D4845A; }
+  .badge-flight { background: rgba(74,127,165,0.15); color: #7BAECF; }
+
+  /* Budget box */
+  .budget-box {
+    margin-top: 56px;
+    background: rgba(196,98,45,0.07);
+    border: 1px solid rgba(196,98,45,0.2);
+    border-radius: 16px;
+    padding: 28px 32px;
+    animation: fadeUp 0.7s 0.6s ease both;
+  }
+
+  .budget-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--warm-white);
+    margin-bottom: 20px;
+  }
+
+  .budget-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(245,236,215,0.07);
+    font-size: 13px;
+  }
+
+  .budget-row:last-of-type { border-bottom: none; }
+
+  .budget-label { color: rgba(245,236,215,0.6); }
+  .budget-amount { color: var(--warm-white); font-weight: 500; }
+
+  .budget-total {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(196,98,45,0.3);
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .budget-total .budget-amount { color: var(--terracotta); font-size: 17px; }
+
+  /* Tips box */
+  .tips-box {
+    margin-top: 24px;
+    background: rgba(122,140,110,0.07);
+    border: 1px solid rgba(122,140,110,0.2);
+    border-radius: 16px;
+    padding: 28px 32px;
+    animation: fadeUp 0.7s 0.7s ease both;
+  }
+
+  .tips-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--warm-white);
+    margin-bottom: 16px;
+  }
+
+  .tip {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: rgba(245,236,215,0.65);
+    line-height: 1.6;
+  }
+
+  .tip-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .tip strong { color: var(--warm-white); font-weight: 500; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 64px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,236,215,0.2);
+    animation: fadeUp 0.7s 0.8s ease both;
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Print styles */
+  @media print {
+    body { background: white; color: #1C1A16; }
+    body::before { display: none; }
+    .activity-card { border-color: #ddd; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <header>
+    <p class="header-eyebrow">Trip Itinerary</p>
+    <h1><em>Arizona</em><br>Adventure</h1>
+    <p class="header-dates">June 18 – 22, 2026 · 2 People</p>
+    <div class="header-divider"></div>
+  </header>
+
+  <div class="trip-meta">
+    <span class="pill">🌵 Phoenix + Sedona</span>
+    <span class="pill">✈️ WS 1168 / WS 1167</span>
+    <span class="pill">🥾 4 Hikes</span>
+    <span class="pill">🛥️ Jet Ski Day</span>
+    <span class="pill">💧 3 Waterholes</span>
+    <span class="pill">~$1,800 USD + Flights</span>
+  </div>
+
+  <!-- DAY 0 — DEPARTURE -->
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-number">00</span>
+      <div class="day-title-wrap">
+        <p class="day-label">June 18 · Wednesday</p>
+        <h2 class="day-title">Departure — Calgary ✈ Phoenix</h2>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">4:00 – 4:30 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-flight">Pickup</span>
+        <div class="activity-name">Pick up from home</div>
+        <div class="activity-note">Head to Calgary International Airport (YYC).</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">5:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-flight">Airport</span>
+        <div class="activity-name">Arrive at YYC — Check-in bags</div>
+        <div class="activity-note">~25 min bag drop + check-in, then head through security. Grab dinner or drinks airside while you wait.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">7:25 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-flight">✈️ WestJet WS 1168</span>
+        <div class="activity-name">Depart Calgary (YYC) → Phoenix (PHX)</div>
+        <div class="activity-note">Flight time: 3 hrs 10 min. <strong>$603 CAD per person</strong> (both flights included). Arrive Phoenix 9:35 PM local time.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">9:35 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-flight">Arrive PHX</span>
+        <div class="activity-name">Land at Phoenix Sky Harbor</div>
+        <div class="activity-note">Collect bags, then pick up rental car. <strong>Car rental: ~$319 USD total</strong> for the trip.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">10:30 – 10:45 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-flight">Car Rental</span>
+        <div class="activity-name">Pick up rental car at PHX</div>
+        <div class="activity-note">~20 min drive to hotel from the airport.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">11:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-food">Check-in</span>
+        <div class="activity-name">Hotel check-in — Scottsdale</div>
+        <div class="activity-note">Drop your bags and get some sleep — early start tomorrow!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-number">01</span>
+      <div class="day-title-wrap">
+        <p class="day-label">June 18 · Wednesday (Evening)</p>
+        <h2 class="day-title">First Night — Phoenix</h2>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">5:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-hike">Easy Hike</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=385298564104506413" target="_blank">Hole in the Rock — Papago Park</a></div>
+        <div class="activity-note">A gentle 20-minute scramble with iconic views of the Phoenix skyline framed through red sandstone. Perfect for first evening energy — low effort, very high reward. Free parking. Opens 5 AM, closes 7 PM.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">7:30 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-food">Dinner</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=14245810083905746251" target="_blank">ZuZu — Hotel Valley Ho, Scottsdale</a></div>
+        <div class="activity-note">Lively Old Town restaurant with incredible food. <strong>Try the Chef's Roulette</strong> if you're feeling adventurous — multi-course surprise menu. Reservations strongly recommended.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-number">02</span>
+      <div class="day-title-wrap">
+        <p class="day-label">June 19 · Thursday</p>
+        <h2 class="day-title">Water Day</h2>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">8:00 AM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-water">Jet Ski</span>
+        <div class="activity-name"><a href="https://jetskiazrentals.com" target="_blank">Jet Ski AZ Rentals — Lake Pleasant</a></div>
+        <div class="activity-note"><strong>Book in advance at jetskiazrentals.com</strong> — they haul the jet skis directly to the lake, no truck needed. 5-star rated. Go as early as possible before temps hit 110°F. Budget ~$250 for a 2-hour rental for two.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">1:00 – 3:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-water">Rest + Cool Down</span>
+        <div class="activity-name">Midday Break</div>
+        <div class="activity-note">Head back to the hotel. Escape the peak heat (1–4 PM is brutal). Pool time, nap, grab lunch at a nearby spot.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">4:30 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-water">Swimming Hole</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=16707711129031906578" target="_blank">Fossil Creek Waterfall</a></div>
+        <div class="activity-note"><strong>⚠️ Book a permit NOW at recreation.gov — $6/person, sells out weeks ahead for June.</strong> One of the most spectacular natural swimming holes in the US — turquoise spring-fed water surrounded by canyon walls. ~1.5 hrs from Phoenix. High-clearance vehicle recommended for the last stretch of road.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">8:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-nightlife">Rooftop Drinks</span>
+        <div class="activity-name"><a href="http://www.outriderrooftop.com" target="_blank">Outrider Rooftop Lounge — Old Town Scottsdale</a></div>
+        <div class="activity-note">7th-floor rooftop with sweeping views of Camelback Mountain. Fire pits, cocktails, great vibes. Perfect sunset spot after a full water day.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-number">03</span>
+      <div class="day-title-wrap">
+        <p class="day-label">June 20 · Friday</p>
+        <h2 class="day-title">Sedona <span style="font-size:14px;font-weight:300;color:var(--sage)">— ~2 hr drive from Phoenix</span></h2>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">6:30 AM<br><em style="font-size:10px;color:var(--terracotta)">~2 hrs from PHX</em></div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-hike">Iconic Hike</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=9426428721783311853" target="_blank">Devil's Bridge Trailhead</a></div>
+        <div class="activity-note"><strong>Arrive by 6:30–7 AM sharp.</strong> This is the must-do Sedona hike — a natural sandstone arch with jaw-dropping views. The line for the bridge photo can hit 45+ minutes by 9 AM. Moderate scrambling, ~4 miles round trip. Worth every step.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">10:00 AM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-hike">Canyon Hike</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=11588049635562259706" target="_blank">Boynton Canyon Trail</a></div>
+        <div class="activity-note">Classic red rock canyon hike with a hidden Subway Cave at the top — secret chamber with 360° views. ~6 miles out and back, moderate. <strong>Finish by noon before the heat peaks.</strong> Look out for deer on the trail.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">12:30 – 4:30 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-food">Lunch + Rest</span>
+        <div class="activity-name">Explore Sedona Town + Lunch</div>
+        <div class="activity-note">Wander uptown Sedona, grab lunch at one of the local spots (Elote Cafe is a local favourite if you can snag a table). Browse the galleries and shops during the hot midday hours.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">5:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-hike">Evening Hike</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=5192459581778153522" target="_blank">West Fork Oak Creek Trailhead</a></div>
+        <div class="activity-note">One of the most beautiful evening hikes in Arizona — a shaded canyon walk through towering red cliffs with 13 creek crossings. ~6.5 miles total, mostly flat. <strong>Bring waterproof shoes or sandals you don't mind getting wet.</strong> $15 parking fee per vehicle.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-number">04</span>
+      <div class="day-title-wrap">
+        <p class="day-label">June 21 · Saturday</p>
+        <h2 class="day-title">The Crack + Back to Phoenix</h2>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">7:00 AM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-water">Slot Canyon Swim</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=17415144588632227881" target="_blank">The Crack at Wet Beaver Creek</a></div>
+        <div class="activity-note"><strong>Start no later than 7 AM.</strong> A stunning natural slot canyon with a deep swimming and cliff-jumping hole at the end — 3.5 miles in. Finish hiking out before noon to avoid the sun on the exposed return. Bring 2L+ water per person, snacks, and sunscreen. On the drive back from Sedona to Phoenix — perfect stopover. <strong>Flash flood risk: check weather before going.</strong></div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">2:00 – 5:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-food">Downtime</span>
+        <div class="activity-name">Drive back to Scottsdale + Rest</div>
+        <div class="activity-note">~1.5 hr drive back to Phoenix area. Shower, relax, grab a late lunch. You've earned it — this is your big rest block.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">7:00 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-nightlife">Evening Out</span>
+        <div class="activity-name"><a href="https://cottontaillounge.com" target="_blank">Cottontail Lounge — W Scottsdale</a></div>
+        <div class="activity-note">Rooftop pool lounge at the W Hotel in Old Town Scottsdale. Mid-century chic design, daybeds, marble bar, weekend DJ sets. Great way to wind down the last big night. Old Town is walkable from here — explore the strip after.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-number">05</span>
+      <div class="day-title-wrap">
+        <p class="day-label">June 22 · Sunday</p>
+        <h2 class="day-title">Camelback + Fly Home</h2>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">5:00 AM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-hike">Bucket List Hike</span>
+        <div class="activity-name"><a href="https://maps.google.com/?cid=11691523250841911723" target="_blank">Echo Canyon Trailhead — Camelback Mountain</a></div>
+        <div class="activity-note"><strong>Set your alarm. Be on trail by 5 AM.</strong> The most iconic urban hike in Phoenix — intense rock scrambling, 1,280 ft elevation gain, and unreal 360° city views at the top. 2–3 hours round trip. Opens at 5 AM. Gets dangerously hot and crowded by 8 AM. Parking fills up — arrive early. No dogs allowed.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">8:30 AM+</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-food">Brunch + Depart</span>
+        <div class="activity-name">Post-hike Brunch then Airport</div>
+        <div class="activity-note">Grab a well-deserved brunch in Old Town (ZuZu does a great brunch too) then head to PHX Sky Harbor — 20 min from Scottsdale.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">3:55 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-flight">Airport</span>
+        <div class="activity-name">Arrive at PHX — Check-in for departure</div>
+        <div class="activity-note">Drop off the rental car, check bags, head through security. ~20 min from Scottsdale to the airport.</div>
+      </div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-time">5:55 PM</div>
+      <div class="activity-dot"></div>
+      <div class="activity-card">
+        <span class="badge badge-flight">✈️ WestJet WS 1167</span>
+        <div class="activity-name">Depart Phoenix (PHX) → Calgary (YYC)</div>
+        <div class="activity-note">Homeward bound. Arrive back in Calgary at <strong>10:00 PM</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="budget-box">
+    <h3>💰 Budget Breakdown — 2 People</h3>
+    <div class="budget-row">
+      <span class="budget-label">✈️ Flights — WS 1168 + WS 1167 (per person)</span>
+      <span class="budget-amount">$603 CAD/person</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">🚗 Car rental (full trip)</span>
+      <span class="budget-amount">~$319 USD</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">⛽ Fuel (estimated, CAD)</span>
+      <span class="budget-amount">~$92 CAD</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">🏨 Hotel — The Scott Resort & Spa (4 nights)</span>
+      <span class="budget-amount">~$650 USD</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">🛥️ Jet ski rental (2 hrs for 2)</span>
+      <span class="budget-amount">~$250 USD</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">🎟️ Fossil Creek permits + misc trail fees</span>
+      <span class="budget-amount">~$50 USD</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">🍽️ Meals + drinks (5 days)</span>
+      <span class="budget-amount">~$550 USD</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">🧴 Misc — parking, sunscreen, snacks</span>
+      <span class="budget-amount">~$100 USD</span>
+    </div>
+    <div class="budget-total">
+      <span class="budget-label">Estimated USD Total (excl. flights)</span>
+      <span class="budget-amount">~$1,919 USD</span>
+    </div>
+    <div class="budget-total" style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(196,98,45,0.15);">
+      <span class="budget-label" style="font-size:12px;color:rgba(245,236,215,0.4)">+ Flights</span>
+      <span class="budget-amount" style="font-size:13px;color:rgba(245,236,215,0.5)">$1,206 CAD (~$880 USD) total for 2</span>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-box">
+    <h3>☀️ Survival Tips</h3>
+    <div class="tip">
+      <span class="tip-icon">🌡️</span>
+      <span><strong>Heat is real.</strong> Expect 105–115°F by midday in late June. Every outdoor activity here is scheduled before 10 AM or after 5 PM for a reason.</span>
+    </div>
+    <div class="tip">
+      <span class="tip-icon">💧</span>
+      <span><strong>Hydration tips .</strong> Bring at least 2L of water per person per hike, more for The Crack. Dehydration sneaks up fast in desert heat.</span>
+    </div>
+    <div class="tip">
+      <span class="tip-icon">🎟️</span>
+      <span><strong>Book Fossil Creek NOW.</strong> Permits sell out weeks in advance on recreation.gov. This is the one thing that needs to be done immediately.</span>
+    </div>
+    <div class="tip">
+      <span class="tip-icon">👟</span>
+      <span><strong>Footwear.</strong> Grippy hiking shoes for Camelback and Devil's Bridge (* lots of rock scrambling). Water shoes or old sneakers for West Fork and The Crack.</span>
+    </div>
+    <div class="tip">
+      <span class="tip-icon">🚗</span>
+      <span><strong>Car rental (~$319 USD total).</strong> You'll need one — Sedona is ~2 hrs from Phoenix and most activity trailheads aren't Uber-accessible. Book early for June and make sure to pick it up at PHX right after landing.</span>
+    </div>
+  </div>
+
+  <footer>
+    <p>Arizona · June 2026 · Made with ♥ by Ara </p>
+  </footer>
+
+</div>
+</body>
+</html>
